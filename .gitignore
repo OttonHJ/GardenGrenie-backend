@@ -1,0 +1,5 @@
+# Dependencias — se regeneran con "npm install", no se suben a GitHub
+node_modules/
+
+# Variables de entorno — contiene la API key real, NUNCA subir a GitHub
+.env
