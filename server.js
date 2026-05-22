@@ -100,7 +100,8 @@ app.post("/identify", async (req, res) => {
      * En plant.id v3 los "details" y el idioma van como query params en la URL,
      * NO en el body del request (a diferencia de v2).
      */
-    const DETAILS = "common_names,taxonomy,watering,best_watering,care_level,type,wikipedia_url";
+    const DETAILS = "common_names,taxonomy,watering,best_watering,care_level,type,description,wikipedia_url";
+
     const plantIdUrl = `https://plant.id/api/v3/identification?details=${DETAILS}&language=es`;
 
     const plantIdResponse = await fetch(plantIdUrl, {
