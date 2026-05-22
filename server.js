@@ -160,7 +160,7 @@ app.post("/identify", async (req, res) => {
         family: details.taxonomy?.family ?? "",
         genus: details.taxonomy?.genus ?? "",
       },
-description: details.description?.value ?? "",
+description: details.description?.value ?? "Planta de prueba - descripcion temporal",
       watering: details.watering ?? details.best_watering ?? "",
       careLevel: details.care_level ?? "",
       type: details.type ?? "",
