@@ -146,6 +146,8 @@ app.post("/identify", async (req, res) => {
     // Toma la sugerencia con mayor confianza (viene ordenada de mayor a menor)
     const best = suggestions[0];
     const details = best.details ?? {};
+    console.log("[plant.id details]", JSON.stringify(details, null, 2));
+
 
     // Devuelve al app solo los campos que necesita para llenar el formulario
     res.json({
