@@ -40,6 +40,19 @@ app.use(cors());
 // limit: "10mb" porque las imágenes en base64 pueden ser grandes
 app.use(express.json({ limit: "10mb" }));
 
+// Traduce texto al español vía MyMemory
+async function translateToSpanish(text) {
+  if (!text) return "";
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|es`;
+    const res = await fetch(url);
+    const data = await res.json();
+    return data.responseData?.translatedText ?? text;
+  } catch {
+    return text;
+  }
+}
+
 // ─── Rutas (Endpoints) ────────────────────────────────────────────────────────
 // Una "ruta" es una URL que el servidor escucha. Cuando la app llama a esa URL,
 // el servidor ejecuta la función correspondiente y devuelve una respuesta.
@@ -150,8 +163,12 @@ app.post("/identify", async (req, res) => {
     console.log("[plant.id details]", JSON.stringify(details, null, 2));
 
 
+    const rawDescription = details.best_watering ?? details.description?.value ?? "";
+    const description = await translateToSpanish(rawDescription);
+
     // Devuelve al app solo los campos que necesita para llenar el formulario
     res.json({
+
       identified: true,
       name: best.name ?? "",                                    // Nombre científico
       commonName: details.common_names?.[0] ?? "",              // Primer nombre común
@@ -160,7 +177,7 @@ app.post("/identify", async (req, res) => {
         family: details.taxonomy?.family ?? "",
         genus: details.taxonomy?.genus ?? "",
       },
-description: details.best_watering ?? details.description?.value ?? "",
+      description,
       watering: details.watering ?? details.best_watering ?? "",
       careLevel: details.care_level ?? "",
       type: details.type ?? "",
